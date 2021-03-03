@@ -1,0 +1,155 @@
+<div class="py-5" align="center">
+
+    <div class="container-fluid w-100 m-1 px-5">
+        <h2>Modify Allocation Model</h2><br>
+        <div class="row px-5">
+            <div class="col-md-12">
+
+                <mat-form-field>
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+                </mat-form-field>
+
+                <mat-table #table [dataSource]="allocationChangeRequestsDataSource" matSort class="mat-elevation-z8">
+
+                    <ng-container matColumnDef="select">
+                        <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <mat-checkbox color="primary" (click)="$event.stopPropagation()" (change)="$event ? selectedAllocationChangeRequest.toggle(row) : null" [checked]="enableEditOnRow(row)">
+                            </mat-checkbox>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="requestId">
+                        <mat-header-cell *matHeaderCellDef> Request Id </mat-header-cell>
+                        <mat-cell *matCellDef="let allocationChangeRequest"> {{allocationChangeRequest.requestId}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="sector">
+                        <mat-header-cell *matHeaderCellDef> Sector </mat-header-cell>
+                        <mat-cell *matCellDef="let allocationChangeRequest"> {{allocationChangeRequest.previousAllocation.sector.name}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="createdTime">
+                        <mat-header-cell mat-sort-header *matHeaderCellDef> Created Time </mat-header-cell>
+                        <mat-cell *matCellDef="let allocationChangeRequest"> {{allocationChangeRequest.createdTime}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="clientOrg">
+                        <mat-header-cell mat-sort-header *matHeaderCellDef> Client Org </mat-header-cell>
+                        <mat-cell *matCellDef="let allocationChangeRequest"> {{allocationChangeRequest.clientOrg}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="mutualFund">
+                        <mat-header-cell *matHeaderCellDef> Mutual Fund </mat-header-cell>
+                        <mat-cell *matCellDef="let allocationChangeRequest">
+                            <mat-cell *ngFor="let modifiedFund of allocationChangeRequest.modifiedAllocation.sector.funds">
+                                {{modifiedFund.name}}
+                            </mat-cell>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="targetWeight">
+                        <mat-header-cell *matHeaderCellDef> Target Weight % </mat-header-cell>
+                        <mat-cell *matCellDef="let allocationChangeRequest">
+                            <mat-cell *ngFor="let modifiedFund of allocationChangeRequest.modifiedAllocation.sector.funds">
+                                {{modifiedFund.targetWeight}}
+                            </mat-cell>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tolerancePercent">
+                        <mat-header-cell *matHeaderCellDef> Tolerance % </mat-header-cell>
+                        <mat-cell *matCellDef="let allocationChangeRequest">
+                            <mat-cell *ngFor="let modifiedFund of allocationChangeRequest.modifiedAllocation.sector.funds">
+                                {{modifiedFund.tolerancePercent}}
+                            </mat-cell>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="minimumTradeSize">
+                        <mat-header-cell *matHeaderCellDef> Min Trade size </mat-header-cell>
+                        <mat-cell *matCellDef="let allocationChangeRequest">
+                            <mat-cell *ngFor="let modifiedFund of allocationChangeRequest.modifiedAllocation.sector.funds">
+                                {{modifiedFund.minimumTradeSize}}
+                            </mat-cell>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="invstFrozenConfig">
+                        <mat-header-cell *matHeaderCellDef> Investment Frozen </mat-header-cell>
+                        <mat-cell *matCellDef="let allocationChangeRequest">
+                            <mat-cell *ngFor="let modifiedFund of allocationChangeRequest.modifiedAllocation.sector.funds">
+                                {{modifiedFund.invstFrozenConfig}}
+                            </mat-cell>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="overDraftLimit">
+                        <mat-header-cell *matHeaderCellDef> Overdraft limit </mat-header-cell>
+                        <mat-cell *matCellDef="let allocationChangeRequest">
+                            <mat-cell *ngFor="let modifiedFund of allocationChangeRequest.modifiedAllocation.sector.funds">
+                                {{modifiedFund.overdraftLimitPercent}}
+                            </mat-cell>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="targetCash">
+                        <mat-header-cell *matHeaderCellDef> Target cash % </mat-header-cell>
+                        <mat-cell *matCellDef="let allocationChangeRequest">
+                            <mat-cell *ngFor="let modifiedFund of allocationChangeRequest.modifiedAllocation.sector.funds">
+                                {{modifiedFund.targetCashPercent}}
+                            </mat-cell>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
+                </mat-table>
+                <mat-paginator [pageSizeOptions]=" [5, 10, 20] " showFirstLastButtons></mat-paginator>
+                <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
+                    <mat-progress-spinner color="primary" mode="indeterminate">
+                    </mat-progress-spinner>
+                </mat-card>
+                <mat-card *ngIf=isError class="example-card">
+                    <mat-card-header>
+                        <mat-card-title>Error!!!</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>
+                            Unable to load data from oracle cloud
+                        </p>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf=isModificationError class="example-card">
+                    <mat-card-header>
+                        <mat-card-title>Error!!!</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>
+                            Unable to modify selected allocation
+                        </p>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf=isModificationSuccess class="example-card">
+                    <mat-card-header>
+                        <mat-card-title>Success</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>
+                            Allocation modified successfully refId:{{txId}}
+                        </p>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+    <div class="px-0 text-center ">
+        <div class="container ">
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <!--    <a class="btn btn-primary btn-lg w-25 border border-primary " href="addrelease.html ">ADD</a> -->
+                    <a class="btn btn-primary btn-lg w-15 border border-primary " routerLink="/userHome"> BACK </a>
+                    <button type="submit" class="btn btn-primary btn-lg w-40 mx-4" data-toggle="modal" data-target="#modifyAllocation">MODIFY</button>
+                    <!--	<button type="submit " class="btn btn-secondary btn-lg w-40 mx-4 " data-toggle="modal " data-target="#congiuretask ">CONFIGURE</button> -->
+                </div>
+            </div>
+        </div>

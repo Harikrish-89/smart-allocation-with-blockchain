@@ -1,0 +1,76 @@
+<div *ngIf=allocation>
+    <div class="modal fade" id="modifyAllocation" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form class="needs-validation" #modifyAllocationForm="ngForm" (ngSubmit)="onSubmit()">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-11">
+                                <div class="card text-white p-2 bg-primary">
+                                    <div class="card-body">
+                                        <h1 class="mb-4 text-center">Change Allocation</h1>
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td> <label for="Tolerances" class="text-light">Tolerances %</label> </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="tolerances" placeholder="" [(ngModel)]="allocation.tolerances" required=""> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td> <label for="TargetWeight" class="text-light">Target Weight</label> </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="targetWeight" placeholder="" [(ngModel)]="allocation.targetWeight" required=""> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-light"> <label for="ShareClassConfigFlag">ShareClassConfigFlag</label> </td>
+                                                    <td><select class="custom-select d-block w-100" name="shareClassConfigFlag" required="" [(ngModel)]="allocation.shareClassConfigFlag">
+                                                        <option [ngValue]="null">Choose...</option>
+                                                        <option [ngValue]="true">Y</option>
+                                                        <option [ngValue]="false">N</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-light"> <label for="InvstFrozenConfig">InvstFrozenConfig</label> </td>
+                                                    <td>
+                                                        <select class="custom-select d-block w-100" name="invstFrozenConfig" required="" [(ngModel)]="allocation.invstFrozenConfig" (ngModelChange)="getInvstFrozenConfig($event)"> 
+                              <option value="null">Choose...</option>
+                              <option value="InvestmentFrozen">Investment Frozen</option>
+                              <option value="NoBuys">NoBuys</option>
+                              <option value="NoSells">NoSells</option>
+                              <option value="Open">Open</option>
+                            </select> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-light"> <label for="TargetCash">TargetCash %</label> </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="targetCash" placeholder="" value="" required="" [(ngModel)]="allocation.targetCash"> </td>
+                                                </tr>
+                                                <tr>
+                                                    <td> <label for="OverdraftLimit" class="text-light">OverdraftLimit</label> </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="overdraftLimit" placeholder="" value="" required="" [(ngModel)]="allocation.overdraftLimit"> </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td> <label for="MinimumTradeSize" class="text-light">MinimumTradeSize</label> </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="minimumTradeSize" placeholder="" value="" required="" [(ngModel)]="allocation.minimumTradeSize"> </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" (click)='onSubmit()' class="btn btn-primary btn-lg w-25 mx-auto" data-toggle="modal" data-target="#modifyAllocation">SUBMIT</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

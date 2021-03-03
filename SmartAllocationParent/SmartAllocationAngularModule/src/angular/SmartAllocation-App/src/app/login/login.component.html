@@ -1,0 +1,40 @@
+<div class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"> </div>
+            <div class="col-md-6">
+                <div class="card text-white p-5 bg-primary">
+                    <div class="card-body">
+                        <h1 class="mb-4">Login form</h1>
+                        <form (ngSubmit)="performLogin()" #login="ngForm">
+                            <mat-card *ngIf=isAuthenticationError class="example-card">
+                                <mat-card-header>
+                                    <mat-card-title>Error!!!</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <p>
+                                        {{errorMessage}}
+                                    </p>
+                                </mat-card-content>
+                            </mat-card>
+                            <div class="form-group"> <label>User Id</label>
+                                <input type="email" class="form-control" name="userName" placeholder="Enter User Id" required="true" [(ngModel)]="userName"> </div>
+                            <div class="form-group"> <label>Password</label>
+                                <input type="password" class="form-control" name="password" placeholder="Password" required="true" [(ngModel)]="password"> </div>
+                            <div class="form-group"> <label>Organisation</label>
+                                <input type="text" class="form-control" name="organisation" placeholder="Organisation" required="true" [(ngModel)]="organisation"> </div>
+                            <div class="form-group"> <label>Role</label> <select class="custom-select d-block w-100" name="role" required="true" [(ngModel)]="role" (ngModelChange)="roleChange($event)">
+                                <option value="" disabled selected>Choose...</option>
+                                <option value="Auditor">Auditor</option>
+                                <option value="Client">Client</option>
+                                <option value="Approver">Approver</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-secondary">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

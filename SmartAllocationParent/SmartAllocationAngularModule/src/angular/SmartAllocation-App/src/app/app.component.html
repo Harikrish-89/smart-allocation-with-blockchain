@@ -1,0 +1,17 @@
+<app-header></app-header>
+<router-outlet (activate)="onRouterOutletActivate($event)"></router-outlet>
+<div *ngIf="showAbout" class="text-justify">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="display-5 mb-4 text-primary">About SMART Allocation</h1>
+                <p class="lead mb-5">Once investment managers establish a long-term strategic allocation or benchmark, fund managers must decide how to manage the fund’s ongoing allocation. Daily market movements can result in constant drifts of actual portfolio allocations
+                    from the strategic benchmark. Traditionally, experts advised “static rebalancing*” wherein simple rules bring the allocations back to the benchmark if some allocation limit is breached or some calendar date is reached. Static rebalancing
+                    strategies are risky, as the investors take an implicit bet to be either long or short an asset without really focusing on the view on the markets. SMART(Systematic Management of Assets using a Rules-based Technique) can be a better
+                    tool for investors. By using market factors and managing allocations proactively within rebalancing ranges (i.e., no change in overall policy), investors can improve performance and risk management. SMART allocation is essential for
+                    good governance.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

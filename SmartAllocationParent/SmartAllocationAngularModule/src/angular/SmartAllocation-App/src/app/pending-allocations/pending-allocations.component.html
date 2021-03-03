@@ -1,0 +1,143 @@
+<div class="py-5" align="center">
+
+    <div class="container-fluid w-100 m-1 px-5">
+        <h2>Review Allocation Model</h2><br>
+        <div class="row px-5">
+            <div class="col-md-12">
+                <table id="allocationTable" mat-table [dataSource]="allocationsDataSource" matSort class="mat-elevation-z8">
+                    <ng-container matColumnDef="select">
+                        <th mat-header-cell *matHeaderCellDef>Select</th>
+                        <td mat-cell *matCellDef="let row">
+                            <mat-checkbox color="primary" (click)="$event.stopPropagation()" (change)="$event ? selectedAllocation.toggle(row) : null" [checked]="selectedAllocation.isSelected(row)">
+                            </mat-checkbox>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="requestId">
+                        <th mat-header-cell *matHeaderCellDef> TxId </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.requestId}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="allocationId">
+                        <th mat-header-cell *matHeaderCellDef> Allocation Id </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.allocationId}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="clientOrg">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Organisation </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.clientOrg}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="clientId">
+                        <th mat-header-cell *matHeaderCellDef> Client ID </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.clientId}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="parentPortfolio">
+                        <th mat-header-cell *matHeaderCellDef> Parent Portfolio </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.parentPortfolio}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef> Status </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.status}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tolerances">
+                        <th mat-header-cell *matHeaderCellDef> Tolerances </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.tolerances}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="targetWeight">
+                        <th mat-header-cell *matHeaderCellDef> Target Weight </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.targetWeight}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="shareClassConfigFlag">
+                        <th mat-header-cell *matHeaderCellDef> Share Class Config </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.shareClassConfigFlag}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="invstFrozenConfig">
+                        <th mat-header-cell *matHeaderCellDef> Invst Frozen Config </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.invstFrozenConfig}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="targetCash">
+                        <th mat-header-cell *matHeaderCellDef> Target Cash </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.targetCash}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="overdraftLimit">
+                        <th mat-header-cell *matHeaderCellDef> Overdraft Limit </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.overdraftLimit}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="minimumTradeSize">
+                        <th mat-header-cell *matHeaderCellDef> Minimum Trade Size </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.minimumTradeSize}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="childPortFolio">
+                        <th mat-header-cell *matHeaderCellDef> Child Portfolio </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.childPortFolio}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="fundName">
+                        <th mat-header-cell *matHeaderCellDef> Fund Name </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.fundName}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="rejectReason">
+                        <th mat-header-cell *matHeaderCellDef> Reject Reason </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.rejectReason}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="createdTime">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Created Time </th>
+                        <td mat-cell *matCellDef="let allocation"> {{allocation.createdTime}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
+                    <mat-progress-spinner color="primary" mode="indeterminate">
+                    </mat-progress-spinner>
+                </mat-card>
+                <mat-card *ngIf=isError class="example-card">
+                    <mat-card-header>
+                        <mat-card-title>Error!!!</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>
+                            Unable to load data from oracle cloud
+                        </p>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf=isModificationSuccess class="example-card">
+                    <mat-card-header>
+                        <mat-card-title>Success</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>
+                            Allocation Modified Successfully
+                        </p>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+    <div class="px-0 text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <a id=approveBtn class="btn btn-primary btn-lg w-15 border border-primary" (click)='onApprove()'> Approve </a>
+                    <a id=rejectBtn class="btn btn-primary btn-lg w-15 border border-primary" (click)='onReject()'> Reject </a>
+                    <a class="btn btn-primary btn-lg w-15 border border-primary" routerLink="/userHome"> BACK </a>
+                    <!--    <button type="submit" class="btn btn-secondary btn-lg w-40 mx-4">BACK</button> -->
+                    <!--	<button type="submit" class="btn btn-secondary btn-lg w-40 mx-4" data-toggle="modal" data-target="#congiuretask">CONFIGURE</button> -->
+                </div>
+            </div>
+        </div>
